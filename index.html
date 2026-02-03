@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YouTube Analytics Dashboard</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <!-- Login/Register Modal -->
+    <div id="authModal" class="modal">
+        <div class="modal-content">
+            <div class="auth-container">
+                <div class="auth-tabs">
+                    <button class="tab-btn active" onclick="showLogin()">Login</button>
+                    <button class="tab-btn" onclick="showRegister()">Register</button>
+                </div>
+                
+                <form id="loginForm" class="auth-form">
+                    <h2>Welcome Back</h2>
+                    <input type="email" id="loginEmail" placeholder="Email" required>
+                    <input type="password" id="loginPassword" placeholder="Password" required>
+                    <button type="submit">Login</button>
+                </form>
+                
+                <form id="registerForm" class="auth-form hidden">
+                    <h2>Create Account</h2>
+                    <input type="text" id="registerName" placeholder="Full Name" required>
+                    <input type="email" id="registerEmail" placeholder="Email" required>
+                    <input type="password" id="registerPassword" placeholder="Password" required>
+                    <button type="submit">Register</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Dashboard -->
+    <div id="dashboard" class="hidden">
+        <nav class="navbar">
+            <div class="nav-brand">
+                <i class="fab fa-youtube"></i>
+                YouTube Analytics
+            </div>
+            <div class="nav-user">
+                <span id="userName"></span>
+                <button onclick="logout()" class="logout-btn">
+                    <i class="fas fa-sign-out-alt"></i>
+                </button>
+            </div>
+        </nav>
+
+        <div class="sidebar">
+            <ul class="nav-menu">
+                <li><a href="#" onclick="showSection('overview')" class="active">
+                    <i class="fas fa-chart-line"></i> Overview
+                </a></li>
+                <li><a href="#" onclick="showSection('my-videos')">
+                    <i class="fas fa-video"></i> My Videos
+                </a></li>
+                <li><a href="#" onclick="showSection('all-videos')">
+                    <i class="fas fa-users"></i> All Users Videos
+                </a></li>
+                <li><a href="#" onclick="showSection('add-video')">
+                    <i class="fas fa-plus"></i> Add Video
+                </a></li>
+            </ul>
+        </div>
+
+        <main class="main-content">
+            <!-- Overview Section -->
+            <section id="overview" class="content-section">
+                <h1>Dashboard Overview</h1>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <i class="fas fa-video"></i>
+                        <div class="stat-info">
+                            <h3 id="totalVideos">0</h3>
+                            <p>Total Videos</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-eye"></i>
+                        <div class="stat-info">
+                            <h3 id="totalViews">0</h3>
+                            <p>Total Views</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-thumbs-up"></i>
+                        <div class="stat-info">
+                            <h3 id="totalLikes">0</h3>
+                            <p>Total Likes</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-comments"></i>
+                        <div class="stat-info">
+                            <h3 id="totalComments">0</h3>
+                            <p>Total Comments</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="chart-container">
+                    <canvas id="analyticsChart"></canvas>
+                </div>
+            </section>
+
+            <!-- My Videos Section -->
+            <section id="my-videos" class="content-section hidden">
+                <h1>My Videos</h1>
+                <div id="myVideosList" class="videos-grid"></div>
+            </section>
+
+            <!-- All Videos Section -->
+            <section id="all-videos" class="content-section hidden">
+                <h1>All Users Videos</h1>
+                <div id="allVideosList" class="videos-grid"></div>
+            </section>
+
+            <!-- Add Video Section -->
+            <section id="add-video" class="content-section hidden">
+                <h1>Add New Video</h1>
+                <form id="addVideoForm" class="add-video-form">
+                    <input type="url" id="videoUrl" placeholder="YouTube Video URL" required>
+                    <button type="submit">Add Video</button>
+                </form>
+            </section>
+        </main>
+    </div>
+
+    <div id="loading" class="loading hidden">
+        <div class="spinner"></div>
+    </div>
+
+    <script src="js/app.js"></script>
+</body>
+</html>
