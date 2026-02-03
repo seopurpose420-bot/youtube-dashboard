@@ -4,6 +4,7 @@
   "description": "YouTube Analytics Dashboard with User Authentication",
   "main": "server.js",
   "scripts": {
+    "build": "echo 'No build step required'",
     "start": "node server.js",
     "dev": "nodemon server.js"
   },
