@@ -73,7 +73,13 @@ const authenticateToken = (req, res, next) => {
 // Auth routes
 app.post('/api/auth/register', async (req, res) => {
   try {
+    if (!process.env.MONGODB_URI) {
+      return res.status(500).json({ message: 'Database not configured. Please set MONGODB_URI environment variable.' });
+    }
     const { email, password, name } = req.body;
+    if (!email || !password || !name) {
+      return res.status(400).json({ message: 'All fields are required' });
+    }
     const existingUser = await User.findOne({ email });
     if (existingUser) return res.status(400).json({ message: 'User already exists' });
     const user = new User({ email, password, name });
@@ -81,7 +87,8 @@ app.post('/api/auth/register', async (req, res) => {
     const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET || 'fallback-secret');
     res.status(201).json({ token, user: { id: user._id, email, name } });
   } catch (error) {
-    res.status(500).json({ message: 'Server error', error: error.message });
+    console.error('Registration error:', error);
+    res.status(500).json({ message: 'Registration failed', error: error.message });
   }
 });
 
@@ -606,6 +613,8 @@ if (process.env.MONGODB_URI) {
   mongoose.connect(process.env.MONGODB_URI)
     .then(() => console.log('MongoDB connected'))
     .catch(err => console.error('MongoDB connection error:', err));
+} else {
+  console.log('No MongoDB URI provided, using in-memory storage');
 }
 
 const PORT = process.env.PORT || 3000;
