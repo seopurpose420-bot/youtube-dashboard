@@ -34,15 +34,17 @@ app.get('/', (req, res) => {
 });
 
 // MongoDB connection
-mongoose.connect(process.env.MONGODB_URI)
+mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/youtube-dashboard')
   .then(() => console.log('MongoDB connected'))
   .catch(err => console.error('MongoDB connection error:', err));
 
 // Schedule analytics update every hour
-cron.schedule('0 * * * *', () => {
-  console.log('Running scheduled analytics update...');
-  updateVideoAnalytics();
-});
+if (process.env.YOUTUBE_API_KEY) {
+  cron.schedule('0 * * * *', () => {
+    console.log('Running scheduled analytics update...');
+    updateVideoAnalytics();
+  });
+}
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
