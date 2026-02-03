@@ -20,7 +20,7 @@ app.use(express.static('public'));
 
 // Basic routes without external files
 app.get('/', (req, res) => {
-  res.send('YouTube Dashboard Server Running');
+  res.sendFile(__dirname + '/public/index.html');
 });
 
 app.get('/health', (req, res) => {
